@@ -1,0 +1,56 @@
+.gallery img{
+width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.menu {
+   width: 100%;
+   height: 50px;
+   background-color: cornflowerblue;
+   padding-top: 12px;
+}
+
+.menu a {
+    color: #ffffff;
+    font-size: helvetica, sans-serif;
+    font-weight: 800;
+    
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.menu a:hover{
+    color: #5077;
+}
+
+p {
+    font-family: helvetica, sans-serif;
+    color: #ffffff;
+}
+
+h2 {
+    font-family: Impact, fantasy;
+    color: cornflowerblue;
+    font-size: 30px;
+    text-align: center;
+    font-style: italic;
+}
+
+h4{
+    font-family: Impact, fantasy;
+    color: cornflowerblue;
+    font-size: 20px;
+    font-style: italic;
+}
+
+body.file2 {
+    background-color: black;
+}
+
+body.file1 {
+    background-image: url(6f389e36-8142-42e4-8c74-1a3abf061128copy.jpeg);
+    background-size: 100%;
+}
