@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body onload="getContact()">
+    
+    <div id="avatarImage"></div>
+    <form id="editForm">
+
+        <label for="firstname">First Name:</label>
+        <input type="text" name="firstname" id="firstname" readonly><br>
+
+        <label for="lastname">Last Name:</label>
+        <input type="text" name="lastname" id="lastname" readonly><br>
+
+        <label for="cellphone">Cellphone Number:</label>
+        <input type="text" name="cellphone" id="cellphone" readonly><br>
+
+        <label for="email">Email Address:</label>
+        <input type="text" name="email" id="email" readonly><br>
+
+        <label for="avatar" id="avatarLabel" hidden>Change profile image:</label>
+        <input type="file" name="avatar" id="avatar" hidden><br>
+        <br>
+
+        <button type="submit" id="submitForm" hidden>Submit</button>
+
+    </form>
+    <br><br>
+
+    <button id="homelink" type="button">Home</button>
+    <button id="editContact" type="button">Edit</button>
+    <button id="deleteContact" type="button">Delete</button>
+
+    <script src="config.js"></script>
+
+    <script>
+
+        var id = getId();
+        document.getElementById("homelink").addEventListener('click', homeLink);
+        document.getElementById("editContact").addEventListener('click', editContact);
+        document.getElementById("submitForm").addEventListener('click', submitForm);
+        console.log("The ID is :" + id);
+
+        function getId(){
+            var url = window.location.href;
+            var pos = url.search("=");
+            var id = url.slice(pos + 1);
+            return id;
+        }
+
+        function getContact(){
+            fetch(rootPath + 'controller/get-contacts/?id=' + id)
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                displayOutput(data);
+                console.log(data);
+            })
+        }
+
+        function homeLink(){
+            window.open("index.html", "_self");
+        }
+
+        function displayOutput(data){
+            avatarImg = `
+            
+            <img src="${rootPath}/controller/uploads/${data[0].avatar}" width="200" />
+
+            `;
+
+            document.getElementById("avatarImage").innerHTML = avatarImg;
+            document.getElementById("firstname").value = data[0].firstname;
+            document.getElementById("lastname").value = data[0].lastname;
+            document.getElementById("cellphone").value = data[0].cellphone;
+            document.getElementById("email").value = data[0].email;
+        }
+
+        function editContact(){
+            document.getElementById("firstname").readOnly = false;
+            document.getElementById("lastname").readOnly = false;
+            document.getElementById("cellphone").readOnly = false;
+            document.getElementById("email").readOnly = false;
+            document.getElementById("avatar").hidden = false;
+            document.getElementById("submitForm").hidden = false;
+        }
+
+        function submitForm(e){
+            e.preventDefault();
+
+            const form = new FormData(document.querySelector("#editForm"));
+            form.append('apiKey', apiKey);
+            form.append('id', id);
+
+            fetch(rootPath + 'controller/insert-contact/', {
+            method: 'POST',
+            headers: {'Accept': 'application/json, *.*'},
+            body: form
+        })
+
+        .then(function(response){
+            return response.text();
+        })
+
+        .then(function(data){
+            if(data == '1'){
+                alert("Contact edited.");
+                
+                homelink();
+            }else{
+                alert(data);
+
+                homelink();
+            }
+        })
+        
+        }
+
+    </script>
+
+</body>
+</html>
